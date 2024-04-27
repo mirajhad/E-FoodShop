@@ -41,12 +41,12 @@ namespace Mango.Web.Controllers
                 await SignInUser(loginResponseDto);
                 _tokenProvider.SetToken(loginResponseDto.Token);
                 return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ModelState.AddModelError("CustomError", responseDto.Message);
-                return View(obj);
-            }
+            }          
+                else
+                {
+                    TempData["error"] = responseDto.Message;
+                    return View(obj);
+                }                            
         }
 
         [HttpGet]
@@ -78,6 +78,10 @@ namespace Mango.Web.Controllers
                     TempData["success"] = "Registration Succeddful";
                     return RedirectToAction(nameof(Login));
                 }
+            }
+            else
+            {
+                TempData["error"] = result.Message;
             }
             var roleList = new List<SelectListItem>()
             {
