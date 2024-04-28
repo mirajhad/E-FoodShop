@@ -15,7 +15,7 @@ namespace Mango.Services.ProductAPI
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<Product, ProductDto>().ReverseMap();
+                config.CreateMap<ProductDto,Product>().ReverseMap();
          
             });
             return mappingConfig;
