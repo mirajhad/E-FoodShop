@@ -63,16 +63,16 @@ namespace Mango.Web.Service
                 switch (apiResponse.StatusCode)
                 {
                     case System.Net.HttpStatusCode.NotFound:
-                        return new ResponseDto { IsSuccess = false, Message = "Not Found" };
+                        return new() { IsSuccess = false, Message = "Not Found" };
 
                     case System.Net.HttpStatusCode.Forbidden:
-                        return new ResponseDto { IsSuccess = false, Message = "Access Denied" };
+                        return new() { IsSuccess = false, Message = "Access Denied" };
 
                     case System.Net.HttpStatusCode.Unauthorized:
-                        return new ResponseDto { IsSuccess = false, Message = "Unauthorized" };
+                        return new() { IsSuccess = false, Message = "Unauthorized" };
 
                     case System.Net.HttpStatusCode.InternalServerError:
-                        return new ResponseDto { IsSuccess = false, Message = "Internal Server Error" };
+                        return new() { IsSuccess = false, Message = "Internal Server Error" };
 
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
