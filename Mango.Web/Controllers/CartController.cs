@@ -31,7 +31,7 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize("Checkout")]
+        [ActionName("Checkout")]
         public async Task<IActionResult> Checkout(CartDto cartDto)
         {
             CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
@@ -41,11 +41,16 @@ namespace Mango.Web.Controllers
 
             var response = await _orderService.CreateOrder(cart);
             OrderHeaderDto orderHeaderDto = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result));
-            if(response != null && response.IsSuccess )
+            if (response != null && response.IsSuccess)
             {
 
             }
             return View();
+        }
+
+        public async Task<IActionResult> Confirmation(int orderId)
+        {
+            return View(orderId);
         }
 
         private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()

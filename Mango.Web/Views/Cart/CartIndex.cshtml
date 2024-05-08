@@ -2,8 +2,8 @@
 @if(Model.CartHeader != null && Model.CartDetails?.Count()>0){
 <form method="post" asp-action="EmailCart">
     <br />
-    <input asp-action="CartHeader.UserId" />
-    <input asp-action="CartHeader.CartHeaderId" />
+    <input asp-action="CartHeader.UserId" hidden />
+    <input asp-action="CartHeader.CartHeaderId" hidden />
     <div class="">
         <div class="card border mt-4 container">
             <div class="card-header bg-dark text-light ml-0 row ">
