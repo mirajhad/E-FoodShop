@@ -1,4 +1,5 @@
 ﻿@model CartDto
+
 <form method="post">
     <input asp-for="CartHeader.UserId" hidden/>
     <input asp-for="CartHeader.CartHeaderId" hidden/>
@@ -98,6 +99,6 @@
     </div>
 </form>
 
-@section Scripts{
-    <partial name="_ValidationScriptsPartial"/>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
