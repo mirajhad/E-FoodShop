@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
+using Stripe.Checkout;
 
 namespace Mango.Services.OrderAPI.Controllers
 {
@@ -65,18 +66,33 @@ namespace Mango.Services.OrderAPI.Controllers
                 {
                     SuccessUrl = stripeRequestDto.ApproveUrl,
                     CancelUrl = stripeRequestDto.CancelUrl,
-                    LineItems = new List<Stripe.Checkout.SessionLineItemOptions>
-                                {
-                                    new Stripe.Checkout.SessionLineItemOptions
-                                    {
-                                        Price = "price_1MotwRLkdIwHu7ixYcPLm5uZ",
-                                        Quantity = 2,
-                                    },
-                                },
-                    Mode = "payment",
+                    LineItems = new List<SessionLineItemOptions>(),
+                               
                 };
-                var service = new Stripe.Checkout.SessionService();
-                service.Create(options);
+                foreach (var item in stripeRequestDto.OrderHeader.OrderDetails)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.Price * 100),
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Name
+                            }
+                        },
+                        Quantity = item.Count,
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+                var service = new SessionService();
+                Session session = service.Create(options);
+                stripeRequestDto.StripeSessionUrl = session.Url;
+                OrderHeader orderHeader = _db.OrderHeaders.First(u=>u.OrderHeaderId==stripeRequestDto.OrderHeader.OrderHeaderId);
+                orderHeader.StripeSessionId = session.Id;
+                _db.SaveChanges();
+                _response.Result = stripeRequestDto;
             }
             catch (Exception ex)
             {
