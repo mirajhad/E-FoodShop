@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Mango.Services.RewardAPI.Data;
 using Mango.Services.RewardAPI.Services;
 using Mango.Services.RewardAPI.Messaging;
+using Mango.Services.RewardAPI.Extension;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -37,6 +38,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 ApplyMigration();
+
+app.UserAzureServiceBusConsumer();
 
 app.Run();
 
