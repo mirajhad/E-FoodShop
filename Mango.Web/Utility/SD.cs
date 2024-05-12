@@ -32,5 +32,11 @@ namespace Mango.Web.Utility
             PUT, 
             DELETE
         }
+
+        public enum ContentType
+        {
+            Json,
+            MultipartFormData
+        }
     }
 }
