@@ -61,7 +61,22 @@ namespace Mango.Web.Service
                                 content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
                             }
                         }
+                        else
+                        {
+                            if (value != null)
+                            {
+                                var stringContent = value.ToString();
+                                var byteArray = Encoding.UTF8.GetBytes(stringContent);
+                                var memoryStream = new MemoryStream(byteArray);
+                                content.Add(new StreamContent(memoryStream), prop.Name);
+                            }
+                            else
+                            {
+                                content.Add(new StreamContent(new MemoryStream()), prop.Name);
+                            }
+                        }
                     }
+                    message.Content = content;
                 }
                 else
                 {
